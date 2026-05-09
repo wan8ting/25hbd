@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>調皮小狗25歲生日特別節目 👻🐶</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --sky-blue: #bae6fd;
+            --accent-blue: #0ea5e9;
+            --deep-blue: #0369a1;
+            --snow-white: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            background: linear-gradient(180deg, var(--sky-blue) 0%, #f0f9ff 100%);
+            color: var(--deep-blue);
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        /* 飄落雪花動畫 */
+        .snowflake {
+            position: absolute;
+            color: white;
+            pointer-events: none;
+            z-index: 5;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(110vh) translateX(15vw) rotate(360deg); opacity: 0; }
+        }
+
+        /* 冰感玻璃卡片 */
+        .glass-card {
+            background: var(--snow-white);
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 50px -12px rgba(14, 165, 233, 0.2);
+            z-index: 10;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-backdrop {
+            background: rgba(186, 230, 253, 0.3);
+            backdrop-filter: blur(3px);
+        }
+
+        .fade-out { opacity: 0; transform: translateY(-30px); pointer-events: none; }
+        .fade-in { opacity: 1; transform: translateY(0); }
+
+        .btn-interact {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-interact:active { transform: scale(0.92); }
+        .btn-interact:hover {
+            transform: translateY(-4px);
+            background-color: var(--accent-blue);
+            color: white;
+            box-shadow: 0 12px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        .media-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            background: rgba(255,255,255,0.5);
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        #media-content img, #sad-puppy {
+            max-height: 280px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        ::-webkit-scrollbar { width: 0px; }
+    </style>
+</head>
+<body>
+
+    <div id="snow-container" class="fixed inset-0 pointer-events-none"></div>
+
+    <main class="w-full max-w-sm px-6 relative z-10">
+        <div class="mb-6 px-4">
+            <div class="flex justify-between text-[10px] font-black mb-1 uppercase tracking-[0.2em] text-sky-600">
+                <span>SKING PROGRESS</span>
+                <span id="progress-text">1 / 5</span>
+            </div>
+            <div class="w-full bg-blue-100/50 rounded-full h-1.5 overflow-hidden border border-white/40">
+                <div id="progress-bar" class="bg-sky-500 h-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(14,165,233,0.5)]" style="width: 20%"></div>
+            </div>
+        </div>
+
+        <div id="question-card" class="glass-card p-8 min-h-[500px] flex flex-col justify-center items-center text-center animate__animated animate__fadeIn">
+            <div id="content-area" class="w-full">
+                <div class="text-4xl mb-3 animate__animated animate__pulse animate__infinite">🏂⛷️</div>
+                <h2 class="text-[11px] font-bold text-sky-400 mb-2 tracking-[0.3em] uppercase">Special Birthday Program</h2>
+                <h3 id="question-title" class="text-xl font-bold mb-10 leading-relaxed text-slate-800">準備好挑戰了嗎？</h3>
+                <div id="options-container" class="space-y-3.5 w-full"></div>
+            </div>
+        </div>
+
+        <div id="roast-box" class="fixed inset-0 z-[100] flex items-center justify-center p-6 hidden">
+            <div class="absolute inset-0 modal-backdrop" onclick="hideRoast()"></div>
+            <div class="glass-card max-w-[310px] w-full p-6 relative animate__animated animate__bounceIn shadow-2xl">
+                <div class="text-center">
+                    <div class="flex justify-center mb-3">
+                        <span class="bg-red-50 text-red-500 px-4 py-1 rounded-full text-[10px] font-black border border-red-100">答錯啦！</span>
+                    </div>
+                    <h4 class="text-slate-800 font-black text-lg mb-3">調皮小狗，你笨笨的喔！</h4>
+                    <div class="media-box mb-4">
+                        <img id="sad-puppy" src="013B6F32-913B-4381-8449-4F9FF9D0097B.jpg" alt="沮喪調皮狗">
+                    </div>
+                    <p id="roast-text" class="text-sm text-gray-600 mb-4 font-medium italic px-2 leading-relaxed"></p>
+                    <div class="bg-blue-50/80 p-3 rounded-2xl mb-5 border border-blue-100">
+                        <p id="hint-text" class="text-[11px] text-sky-700 font-bold"></p>
+                    </div>
+                    <button onclick="hideRoast()" class="w-full py-3.5 bg-slate-800 text-white rounded-2xl text-sm font-bold shadow-xl active:scale-95 transition-all">對不起...我再想一次</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="reward-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 hidden opacity-0 transition-all duration-500">
+        <div class="absolute inset-0 modal-backdrop"></div>
+        <div class="glass-card max-w-sm w-full p-6 relative animate__animated shadow-2xl">
+            <div class="text-center">
+                <div class="mb-4 text-4xl">✨</div>
+                <h2 class="text-2xl font-black mb-1 text-slate-800">這才對嘛！</h2>
+                <p id="reward-text" class="text-gray-500 mb-6 italic text-sm px-4">解鎖一段關於我們的小驚喜...</p>
+                <div id="media-content" class="media-box mb-6 min-h-[180px]"></div>
+                <button onclick="closeModal()" class="w-full py-4 bg-sky-500 text-white rounded-full font-black shadow-xl shadow-blue-200 hover:bg-sky-600 transition-all">滑向下一關</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const QUESTIONS = [
+            {
+                q: "Q1: 第一次接觸是在？",
+                options: ["富良野宿舍抓人", "星野雪場滑雪", "線上"],
+                correct: 2,
+                hint: "想一想，是不是隔著螢幕才有了開端？",
+                rewardMsg: "哈囉我是 Japsnow 星野的 Shelly，一切就是從這裡開始的。",
+                mediaUrl: "image_acd93d.jpg" 
+            },
+            {
+                q: "Q2: 第一次惹 Shelly 生氣是為什麼？",
+                options: ["跟 Leon 不倫", "跟阿倫不倫", "自己耍笨"],
+                correct: 2,
+                hint: "通常禍首都是因為那個偶爾會斷線的腦袋...",
+                rewardMsg: "這次就原諒你哼哼",
+                mediaUrl: "1E4F4237-07D5-4689-9A8C-FAB9B34A04DA.jpg"
+            },
+            {
+                q: "Q3: Shelly 摔傷的時候來了幾個 patrol？",
+                options: ["2 人", "3 人", "4 人"],
+                correct: 1,
+                hint: "回憶一下那個紅衣人圍著我的震撼場面...",
+                rewardMsg: "謝謝這三位Patrol🧎還有陪在身邊的你",
+                mediaUrl: "BB812CA2-33F3-417A-A4B4-C0AC820E65EA.jpg"
+            },
+            {
+                q: "Q4: Shelly 這一季聯絡了幾次保險/拖車？",
+                options: ["2", "3", "4"],
+                correct: 2,
+                hint: "這一季的保險公司應該很想幫我辦張集點卡...",
+                rewardMsg: "4 次！這一季真的充滿了各種驚心動魄的『意外』之旅。",
+                mediaUrl: "A13F5D5A-C104-47DA-910C-78387B92E726.jpg"
+            },
+            {
+                q: "最終彩蛋：Ken 跟 Shelly 的身高差是幾公分？",
+                type: "password",
+                correct: "27", 
+                hint: "提示：一個二開頭的數字，是我們最萌的距離。",
+                rewardMsg: "這樣也能答對！欣賞你那大言不慚的自信👻",
+                mediaUrl: "8D8DC9A0-96C5-4905-9DCE-A92A089E3014.png" // 已修正副檔名為 png
+            }
+        ];
+
+        const ROASTS = ["這題也能錯？你是滑雪滑到腦袋結冰了嗎？❄️", "哎呀... 這智商大概跟雪人差不多高呢。⛄", "真不愧是你，調皮小狗，晚點罰你跪在雪地裡喔！", "你的記憶力是被暴風雪吹走了嗎？再想一下啦！", "這種難度你都不行，我看我們還是回家吹暖氣好了...", "調皮小狗，你是不是欠教訓呀？👻🐶"];
+        let currentIdx = 0;
+        const storageKey = 'puppy_25th_bday_final_final';
+
+        function init() {
+            createSnow();
+            const saved = localStorage.getItem(storageKey);
+            if (saved) {
+                currentIdx = parseInt(saved);
+                if (currentIdx >= QUESTIONS.length) {
+                    currentIdx = 0;
+                    localStorage.setItem(storageKey, 0);
+                }
+            }
+            renderQuestion();
+        }
+
+        function createSnow() {
+            const container = document.getElementById('snow-container');
+            for (let i = 0; i < 45; i++) {
+                const snow = document.createElement('div');
+                snow.className = 'snowflake';
+                snow.innerHTML = '❄️';
+                snow.style.left = Math.random() * 100 + 'vw';
+                snow.style.animationDuration = (Math.random() * 5 + 7) + 's';
+                snow.style.animationDelay = Math.random() * 10 + 's';
+                snow.style.fontSize = (Math.random() * 8 + 12) + 'px';
+                container.appendChild(snow);
+            }
+        }
+
+        function renderQuestion() {
+            const data = QUESTIONS[currentIdx];
+            const title = document.getElementById('question-title');
+            const optionsBox = document.getElementById('options-container');
+            const progressText = document.getElementById('progress-text');
+            const progressBar = document.getElementById('progress-bar');
+            const prog = ((currentIdx + 1) / QUESTIONS.length) * 100;
+            progressBar.style.width = `${prog}%`;
+            progressText.innerText = `${currentIdx + 1} / ${QUESTIONS.length}`;
+            title.innerText = data.q;
+            optionsBox.innerHTML = '';
+            if (data.type === 'password') {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.id = 'pwd-input';
+                input.placeholder = '請輸入數字...';
+                input.className = 'w-full p-4 rounded-2xl border-2 border-blue-50 focus:border-sky-400 outline-none text-center mb-4 text-xl font-black bg-white/50';
+                const btn = document.createElement('button');
+                btn.innerText = '提交身高差驗證';
+                btn.className = 'w-full py-4.5 bg-sky-500 text-white rounded-2xl font-black btn-interact shadow-lg shadow-sky-100';
+                btn.onclick = () => checkAnswer(document.getElementById('pwd-input').value);
+                optionsBox.appendChild(input);
+                optionsBox.appendChild(btn);
+            } else {
+                data.options.forEach((opt, index) => {
+                    const btn = document.createElement('button');
+                    btn.innerText = opt;
+                    btn.className = 'w-full p-4.5 bg-white/70 border border-blue-50 rounded-2xl text-[15px] font-bold btn-interact text-sky-900 shadow-sm';
+                    btn.onclick = () => checkAnswer(index);
+                    optionsBox.appendChild(btn);
+                });
+            }
+        }
+
+        function checkAnswer(answer) {
+            const data = QUESTIONS[currentIdx];
+            const isCorrect = (data.type === 'password') ? (answer.toString() === data.correct) : (answer === data.correct);
+            if (isCorrect) showModal(data);
+            else showRoast(data.hint);
+        }
+
+        function showRoast(hint) {
+            const roastBox = document.getElementById('roast-box');
+            const roastText = document.getElementById('roast-text');
+            const hintText = document.getElementById('hint-text');
+            roastText.innerText = ROASTS[Math.floor(Math.random() * ROASTS.length)];
+            hintText.innerText = `💡 提示：${hint}`;
+            roastBox.classList.remove('hidden');
+            const card = document.getElementById('question-card');
+            card.classList.add('animate__shakeX');
+            setTimeout(() => card.classList.remove('animate__shakeX'), 500);
+        }
+
+        function hideRoast() { document.getElementById('roast-box').classList.add('hidden'); }
+
+        function showModal(data) {
+            const modal = document.getElementById('reward-modal');
+            const mediaBox = document.getElementById('media-content');
+            const rewardText = document.getElementById('reward-text');
+            const modalInner = modal.querySelector('.glass-card');
+            rewardText.innerText = data.rewardMsg;
+            mediaBox.innerHTML = '';
+            const img = document.createElement('img');
+            img.src = data.mediaUrl;
+            img.className = 'animate__animated animate__fadeIn';
+            img.onerror = () => { mediaBox.innerHTML = '<p class="text-[10px] text-gray-400 p-4">照片載入中或路徑異常</p>'; };
+            mediaBox.appendChild(img);
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.add('opacity-100'); modalInner.classList.add('animate__zoomIn'); }, 20);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('reward-modal');
+            const card = document.getElementById('question-card');
+            modal.classList.remove('opacity-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                card.classList.add('fade-out');
+                setTimeout(() => {
+                    currentIdx++;
+                    if (currentIdx < QUESTIONS.length) {
+                        localStorage.setItem(storageKey, currentIdx);
+                        renderQuestion();
+                        card.classList.remove('fade-out');
+                        card.classList.add('fade-in');
+                        setTimeout(() => card.classList.remove('fade-in'), 500);
+                    } else handleFinish();
+                }, 500);
+            }, 500);
+        }
+
+        function handleFinish() {
+            const content = document.getElementById('content-area');
+            content.innerHTML = `
+                <div class="text-7xl animate__animated animate__heartBeat animate__infinite mb-6">🎂</div>
+                <h2 class="text-2xl font-black mt-6 mb-2 text-slate-800">生日快樂！調皮小狗👻🐶</h2>
+                <div class="bg-sky-50/50 p-6 rounded-[2rem] mb-8 border border-white/50">
+                    <p class="text-gray-600 text-sm leading-relaxed font-medium">謝謝你出現在我的生命裡，未來的每個生日、每個春夏秋冬都想和你一起度過❤️</p>
+                </div>
+                <button onclick="resetGame()" class="text-[11px] text-sky-500 font-black uppercase tracking-widest border-b-2 border-sky-200 pb-1 hover:text-sky-600 transition-colors">還要祝你順利拿到駕照🤭</button>
+            `;
+        }
+
+        function resetGame() { localStorage.setItem(storageKey, 0); window.location.reload(); }
+        window.onload = init;
+    </script>
+</body>
+</html>
