@@ -98,6 +98,7 @@
     <div id="snow-container" class="fixed inset-0 pointer-events-none"></div>
 
     <main class="w-full max-w-sm px-6 relative z-10">
+        <!-- 進度條 -->
         <div class="mb-6 px-4">
             <div class="flex justify-between text-[10px] font-black mb-1 uppercase tracking-[0.2em] text-sky-600">
                 <span>SKING PROGRESS</span>
@@ -117,6 +118,7 @@
             </div>
         </div>
 
+        <!-- 答錯彈窗 -->
         <div id="roast-box" class="fixed inset-0 z-[100] flex items-center justify-center p-6 hidden">
             <div class="absolute inset-0 modal-backdrop" onclick="hideRoast()"></div>
             <div class="glass-card max-w-[310px] w-full p-6 relative animate__animated animate__bounceIn shadow-2xl">
@@ -138,6 +140,7 @@
         </div>
     </main>
 
+    <!-- 答對獎勵彈窗 -->
     <div id="reward-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 hidden opacity-0 transition-all duration-500">
         <div class="absolute inset-0 modal-backdrop"></div>
         <div class="glass-card max-w-sm w-full p-6 relative animate__animated shadow-2xl">
@@ -191,7 +194,7 @@
                 correct: "27", 
                 hint: "提示：一個二開頭的數字，是我們最萌的距離。",
                 rewardMsg: "這樣也能答對！欣賞你那大言不慚的自信👻",
-                mediaUrl: "8D8DC9A0-96C5-4905-9DCE-A92A089E3014.png" // 已修正副檔名為 png
+                mediaUrl: "8D8DC9A0-96C5-4905-9DCE-A92A089E3014.png"
             }
         ];
 
@@ -325,7 +328,10 @@
                 <div class="bg-sky-50/50 p-6 rounded-[2rem] mb-8 border border-white/50">
                     <p class="text-gray-600 text-sm leading-relaxed font-medium">謝謝你出現在我的生命裡，未來的每個生日、每個春夏秋冬都想和你一起度過❤️</p>
                 </div>
-                <button onclick="resetGame()" class="text-[11px] text-sky-500 font-black uppercase tracking-widest border-b-2 border-sky-200 pb-1 hover:text-sky-600 transition-colors">還要祝你順利拿到駕照🤭</button>
+                <div class="flex flex-col items-center space-y-4">
+                    <button onclick="resetGame()" class="w-full py-4 bg-sky-500 text-white rounded-full font-black shadow-xl hover:bg-sky-600 transition-all btn-interact">回到開頭重新挑戰</button>
+                    <button onclick="resetGame()" class="text-[11px] text-sky-500 font-black uppercase tracking-widest border-b-2 border-sky-200 pb-1 hover:text-sky-600 transition-colors">還要祝你順利拿到駕照🤭</button>
+                </div>
             `;
         }
 
