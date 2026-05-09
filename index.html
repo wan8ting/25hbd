@@ -330,12 +330,25 @@
                 </div>
                 <div class="flex flex-col items-center space-y-4">
                     <button onclick="resetGame()" class="w-full py-4 bg-sky-500 text-white rounded-full font-black shadow-xl hover:bg-sky-600 transition-all btn-interact">回到開頭重新挑戰</button>
-                    <button onclick="resetGame()" class="text-[11px] text-sky-500 font-black uppercase tracking-widest border-b-2 border-sky-200 pb-1 hover:text-sky-600 transition-colors">還要祝你順利拿到駕照🤭</button>
+                    <p class="text-[11px] text-sky-500 font-black uppercase tracking-widest border-b-2 border-sky-200 pb-1">還要祝你順利拿到駕照🤭</p>
                 </div>
             `;
         }
 
-        function resetGame() { localStorage.setItem(storageKey, 0); window.location.reload(); }
+        function resetGame() {
+            // 直接重置狀態並重新渲染，不依賴頁面重新載入，確保絕對會回到第一題
+            localStorage.setItem(storageKey, 0);
+            currentIdx = 0;
+            const content = document.getElementById('content-area');
+            content.innerHTML = `
+                <div class="text-4xl mb-3 animate__animated animate__pulse animate__infinite">🏂⛷️</div>
+                <h2 class="text-[11px] font-bold text-sky-400 mb-2 tracking-[0.3em] uppercase">Special Birthday Program</h2>
+                <h3 id="question-title" class="text-xl font-bold mb-10 leading-relaxed text-slate-800">準備好挑戰了嗎？</h3>
+                <div id="options-container" class="space-y-3.5 w-full"></div>
+            `;
+            renderQuestion();
+        }
+
         window.onload = init;
     </script>
 </body>
